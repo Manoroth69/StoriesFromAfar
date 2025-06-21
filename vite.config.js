@@ -5,5 +5,7 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     react()
-  ],
+  ], server: {
+    open: true // Automatically open browser
+  }
 })
