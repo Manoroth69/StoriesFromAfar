@@ -1,81 +1,132 @@
 // components/MagneticLink.jsx
-// components/MagneticLink.jsx
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { motion, useMotionTemplate, useMotionValue, animate } from 'framer-motion';
 
-export default function MagneticLink({ children, className = '', ...props }) {
+export default function MagneticLink({
+  children,
+  className = '',
+  isButton = false,
+  ...props
+}) {
   const ref = useRef(null);
   const { theme } = useTheme();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const scale = useMotionValue(1);
+  const transform = useMotionTemplate`translate(${x}px, ${y}px) scale(${scale})`;
 
-  // Theme configurations
- const themeConfig = {
+  // Theme configuration for both buttons and links
+  const themeConfig = {
     light: {
-      strength: 0.2,
-      textColor: 'text-gray-800 hover:text-blue-600',
-      hoverEffect: 'hover:after:w-full hover:after:bg-blue-600',
-      padding: 'pb-2'
+      link: {
+        text: 'text-gray-800 hover:text-blue-600',
+        bg: 'hover:bg-blue-50/50',
+        underline: 'from-[#ff7edb] to-[#42d6ff]',
+        strength: 0.25
+      },
+      button: {
+        strength: 0.15
+      }
     },
     dark: {
-      strength: 0.3,
-      textColor: 'text-gray-200 hover:text-[#fff]',
-      hoverEffect: 'hover:after:w-full hover:after:bg-blue-500',
-      padding: 'pb-2'
+      link: {
+        text: 'text-gray-200 hover:text-white',
+        bg: 'hover:bg-white/5',
+        underline: 'from-blue-400 to-indigo-500',
+        strength: 0.35
+      },
+      button: {
+        strength: 0.2
+      }
     },
     synthwave: {
-      strength: 0.4,
-      textColor: 'text-gray-200 hover:!text-[#ff7edb]', // Added !important flag
-      hoverEffect: 'hover:after:w-full hover:after:bg-gradient-to-r hover:after:from-[#ff7edb] hover:after:to-[#42d6ff]',
-      padding: 'pb-2'
+      link: {
+        text: 'text-pink-300 hover:text-white',
+        bg: 'hover:bg-pink-900/20',
+        underline: 'from-[#ff7edb] to-[#42d6ff]',
+        strength: 0.5
+      },
+      button: {
+        strength: 0.3
+      }
     },
     neon: {
-      strength: 0.5,
-      textColor: 'text-gray-200 hover:text-[#22d3ee]',
-      hoverEffect: 'hover:after:w-full hover:after:bg-gradient-to-r hover:after:from-[#22d3ee] hover:after:to-[#c026d3]',
-      padding: 'pb-2'
+      link: {
+        text: 'text-cyan-300 hover:text-white',
+        bg: 'hover:bg-cyan-900/20',
+        underline: 'from-[#22d3ee] to-[#c026d3]',
+        strength: 0.3
+      },
+      button: {
+        strength: 0.2
+      }
     }
   };
 
+  const config = isButton ? themeConfig[theme].button : themeConfig[theme].link;
 
   const handleMouseMove = (e) => {
     if (!ref.current) return;
 
     const { left, top, width, height } = ref.current.getBoundingClientRect();
-    const x = (e.clientX - left - width/2) * themeConfig[theme].strength;
-    const y = (e.clientY - top - height/2) * themeConfig[theme].strength;
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    const distanceX = e.clientX - centerX;
+    const distanceY = e.clientY - centerY;
 
-    ref.current.style.transform = `translate(${x}px, ${y}px)`;
+    const moveX = distanceX * config.strength;
+    const moveY = distanceY * config.strength;
+
+    animate(x, moveX, { type: 'spring', damping: 15, stiffness: 150 });
+    animate(y, moveY, { type: 'spring', damping: 15, stiffness: 150 });
+    animate(scale, 1.03, { duration: 0.2 });
   };
 
   const handleMouseLeave = () => {
-    if (ref.current) {
-      ref.current.style.transform = 'translate(0, 0)';
-    }
+    animate(x, 0, { type: 'spring', damping: 15, stiffness: 100 });
+    animate(y, 0, { type: 'spring', damping: 15, stiffness: 100 });
+    animate(scale, 1, { duration: 0.3 });
   };
 
   return (
-    <a
+    <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      style={{ transform }}
       className={`
-        relative inline-block no-underline
-        transition-all duration-300 ease-out
-        ${themeConfig[theme].textColor}
-        ${themeConfig[theme].padding}
-        ${themeConfig[theme].hoverEffect}
+        inline-block no-underline
+        ${!isButton ? config.text : ''}
+        ${!isButton ? config.bg : ''}
         ${className}
-
-        /* Underline effect */
-        after:content-[''] after:absolute
-        after:left-0 after:bottom-0
-        after:h-[2px] after:w-0
-        after:transition-all after:duration-300 after:ease-out
+        will-change-transform
+        cursor-pointer
+        rounded-lg
       `}
       {...props}
     >
-      {children}
-    </a>
+      {!isButton && (
+        <>
+          <span className={`
+            absolute left-0 bottom-0 h-[2px] w-full
+            transform origin-left scale-x-0
+            transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]
+            bg-gradient-to-r ${config.underline}
+            group-hover:scale-x-100
+          `}/>
+        </>
+      )}
+
+      {props.href ? (
+        <a href={props.href} className="contents">
+          {children}
+        </a>
+      ) : (
+        children
+      )}
+    </motion.div>
   );
 }

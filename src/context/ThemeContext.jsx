@@ -3,45 +3,51 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
+  // Initialize with undefined to detect first render
+  const [theme, setTheme] = useState(undefined);
 
   const themes = {
-  // ... existing themes ...
-  neon: {
-    bg: 'bg-neon-bg',
-    text: 'text-neon-text',
-    accentText: 'from-neon-primary to-neon-secondary',
-    cardBg: 'bg-neon-card backdrop-blur-lg',
-    cardBorder: 'border-neon-border border-opacity-50',
-    buttonPrimary: 'bg-gradient-to-r from-neon-primary to-neon-secondary text-black font-bold',
-    buttonSecondary: 'border-neon-primary text-neon-primary hover:bg-neon-primary hover:text-black'
-  }
-}
+    light: { /* your config */ },
+    dark: { /* your config */ },
+    synthwave: { /* your config */ },
+    neon: { /* your config */ }
+  };
 
-
-  // Initialize theme from localStorage or preference
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
-    setTheme(initialTheme);
+    // Only run on client side
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Priority: localStorage > system preference > default
+      const initialTheme = savedTheme || (systemDark ? 'dark' : 'light');
+      setTheme(initialTheme);
+
+      // Apply immediately to prevent flash
+      document.documentElement.className = initialTheme;
+      document.documentElement.setAttribute('data-theme', initialTheme);
+    }
   }, []);
 
-  // Apply theme changes
   useEffect(() => {
-    if (!theme) return;
-
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-    document.documentElement.className = theme;
+    if (theme) {
+      localStorage.setItem('theme', theme);
+      document.documentElement.className = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+    }
   }, [theme]);
 
   const toggleTheme = (newTheme) => {
     setTheme(newTheme);
   };
 
+  // Don't render until theme is determined
+  if (typeof theme === 'undefined') {
+    return null;
+  }
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, themeConfig: themes[theme] }}>
       {children}
     </ThemeContext.Provider>
   );

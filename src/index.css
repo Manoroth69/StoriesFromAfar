@@ -4,6 +4,7 @@
 
 }
 
+
 .custom-cursor {
   position: fixed;
   border: 2px solid #22d3ee;
@@ -71,12 +72,36 @@ body {
 
 * {
   transition: background-color 0.3s, color 0.2s;
+
 }
 
 
 body {
   @apply bg-base-100 text-base-content min-h-screen;
   transition: background-color 0.3s ease;
+}
+
+/* Prevent white flash */
+html:not([data-theme]),
+html[data-theme="light"] {
+  background-color: white;
+}
+
+html[data-theme="dark"] {
+  background-color: #111827;
+}
+
+html[data-theme="synthwave"] {
+  background-color: #1a103d;
+}
+
+html[data-theme="neon"] {
+  background-color: #0f172a;
+}
+
+/* Smooth transitions */
+html {
+  transition: background-color 300ms ease;
 }
 
 [data-theme="light"] body {
@@ -167,8 +192,7 @@ body {
 
 
 html.synthwave h1,
-html.synthwave p,
-html.synthwave a {
+html.synthwave p {
   color: #fff; /* or some neon-like colors */
 }
 
