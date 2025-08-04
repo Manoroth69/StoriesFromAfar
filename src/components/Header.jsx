@@ -7,6 +7,12 @@ import { useTheme } from "../context/ThemeContext";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, themeConfig } = useTheme();
+  const [user, setUser] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authType, setAuthType] = useState("login"); // 'login' or 'register'
+  
+ 
+
 
   // Enhanced animations with smoother easing
   const containerVariants = {
@@ -56,12 +62,12 @@ const Header = () => {
   };
 
   const navLinks = [
-    { href: "#home", text: "Home", offset: 0 },
-    { href: "#stories", text: "Stories", offset: 80 }, // 80px offset from top
-     { href: "#generator", text: "Story Generator", offset: 80 },
-    { href: "#donate", text: "Support", offset: 80 },
-    { href: "#about", text: "About", offset: 80 },
-
+    { href: "#home", text: "Home", offset: 0, id: "home" },
+    { href: "#stories", text: "Stories", offset: 80, id: "stories" },
+  
+    { href: "#donate", text: "Support", offset: 80, id: "donate" },
+    { href: "#about", text: "About", offset: 80, id: "about" },
+   
   ];
 
   // Theme-specific styles
@@ -151,7 +157,7 @@ const Header = () => {
               className="hidden md:flex items-center gap-6"
             >
               {navLinks.map((link) => (
-                <motion.div key={link.href} variants={itemVariants}>
+                <motion.div key={link.id} variants={itemVariants}>
                   <MagneticLink
                     onClick={() => smoothScroll(link.href, link.offset)}
                     className={`link ${themeConfig.text} hover:opacity-80 transition-all duration-300 px-4 py-2 font-semibold cursor-pointer`}
@@ -226,7 +232,7 @@ const Header = () => {
             animate="open"
             exit="closed"
             variants={mobileMenuVariants}
-            className={`md:hidden ${themeConfig.headerBg} ${themeConfig.headerBorder} border-t overflow-hidden`}
+            className={`md:hidden ${themeConfig.headerBg} ${themeConfig.headerBorder}  overflow-hidden`}
           >
             <motion.div
               variants={containerVariants}
@@ -234,7 +240,7 @@ const Header = () => {
             >
               {navLinks.map((link) => (
                 <motion.div
-                  key={`mobile-${link.href}`}
+                  key={`mobile-${link.id}`}
                   variants={itemVariants}
                   className="w-full text-center"
                 >

@@ -1,27 +1,45 @@
-import Header from './components/Header.jsx';
-import Hero from './components/Hero.jsx';
-import About from './components/About.jsx';
-import StoriesSection from './components/StoriesSection.jsx';
-import StoryCard from './components/StoryCard.jsx';
-import DonationSection from './components/DonationSection.jsx';
-// Correct import - assuming ThemeContext.jsx is in src/context/
-import { ThemeProvider } from './context/ThemeContext.jsx';
-import AnimatedCursor from './components/Cursor';
+// src/App.jsx
+import { useEffect, useState } from 'react'
+import Header from './components/Header.jsx'
+import Hero from './components/Hero.jsx'
+import About from './components/About.jsx'
+import StoriesSection from './components/StoriesSection.jsx'
+import DonationSection from './components/DonationSection.jsx'
+import { ThemeProvider } from './context/ThemeContext.jsx'
+import AnimatedCursor from './components/Cursor.jsx'
+import { supabase } from './utlis/supabase.js'
+
 
 export default function App() {
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    // On mount, check session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    // Listen for login/logout changes
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
+
   return (
     <main>
       <ThemeProvider>
-         <AnimatedCursor />
-        <div className="app">
-          <Header />
-          <Hero />
-          <About />
-          <StoriesSection />
-          <DonationSection/>
-          {/* All other components */}
-        </div>
+        <AnimatedCursor />
+
+              <Header />
+              <Hero />
+              <About />
+              <StoriesSection />
+             
+              <DonationSection />
+              {/* Add logout button here if you want */}
+
+
       </ThemeProvider>
     </main>
-  );
+  )
 }

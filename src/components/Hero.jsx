@@ -18,6 +18,22 @@ import MagneticLink from './MagneticLink'; // Link cu efect magnetic la hover
 // DEFINIREA COMPONENTEI FUNCȚIONALE HERO
 // Aceasta este componenta principală care afișează secțiunea hero a site-ului
 const Hero = () => {
+
+function getButtonTextColor(accentColor, theme) {
+  // Theme-specific overrides
+  if (theme === 'synthwave') return 'white';
+  if (theme === 'neon') return 'white';
+  
+  // For other themes, calculate luminance
+  const hex = accentColor.replace('#', '');
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  
+  return luminance > 0.5 ? 'black' : 'white';
+}
+
   const { theme, themeConfig } = useTheme();
   // HOOK-URI REACT
 
@@ -73,7 +89,7 @@ const Hero = () => {
       cardBorder: 'border-[#9D00FF]/30', // Bordură purple cu 30% transparență
       buttonPrimary: 'bg-gradient-to-r from-[#FF2D75] to-[#9D00FF] text-[#fffbf0] shadow-[0_0_10px_rgba(255,45,117,0.4)] hover:shadow-[0_0_20px_rgba(157,0,255,0.6)] hover:scale-105 transition-all duration-300 ease-out rounded-lg', // Gradient neon roz-purple
       buttonSecondary: 'border-[#000] text-[#00F5FF] hover:bg-[#00F5FF] hover:text-black border',// Cyan cu hover
-      buttonControls: 'border border-[#FF2D75] text-[#FF2D75] hover:bg-[#FF2D75] hover:text-black transition duration-300 shadow-[0_0_10px_rgba(255,45,117,0.4)] hover:shadow-[0_0_20px_rgba(255,45,117,0.6)]' // Cyan cu hover
+      buttonControls: 'border border-[#FF2D75] text-[#fff] hover:bg-[#FF2D75] hover:text-black transition duration-300 shadow-[0_0_10px_rgba(255,45,117,0.4)] hover:shadow-[0_0_20px_rgba(255,45,117,0.6)]' // Cyan cu hover
     },
 
     // TEMA NEON - Cu efecte de lumină neon intense
@@ -86,6 +102,15 @@ const Hero = () => {
       buttonPrimary: 'bg-gradient-to-r from-[#00F5FF] to-[#00C2C2] text-black shadow-[0_0_10px_rgba(0,245,255,0.3)] hover:shadow-[0_0_20px_rgba(0,245,255,0.6)] hover:scale-105 transition-all duration-300 ease-out rounded-lg', // Folosește clasa CSS custom
        buttonControls: 'border border-[#00F5FF] text-[#00F5FF] hover:bg-[#00F5FF] hover:text-black transition duration-300 shadow-[0_0_10px_rgba(0,245,255,0.4)] hover:shadow-[0_0_20px_rgba(0,245,255,0.6)]' // Cyan cu hover
     },
+     // New Cyberpunk theme
+    cyberpunk: {
+      primary: '#FF00FF',
+      secondary: '#00FFFF',
+      background: '#0f0f1a',
+      text: '#e0e0e0',
+      accent: '#FF00FF',
+      special: '#00FF41' // Matrix green for accents
+    }
   };
 
   // Selectarea temei curente cu fallback la tema light
@@ -100,12 +125,11 @@ const Hero = () => {
      title: "Symbiotech",
     excerpt: "Explore the symbiotic future of technology and humanity.",
      readTime: "5 min read",
-    accentColor: "#7D1BB5",
     backgroundPrompt: "Futuristic neon city skyline at night with glowing biotech elements, cyberpunk colors, vibrant purples and blues, synthwave style, detailed, atmospheric lighting",
     backgroundImageUrl: "url-generated-from-ai-or-static.jpg",
       accentColor: theme === 'synthwave' ? '#FF2D75' :
-                  theme === 'neon' ? '#00F5FF' :
-                  theme === 'dark' ? '#00A5FF' : '#0066CC'
+                  theme === 'neon' ? '#334D4E' :
+                  theme === 'dark' ? '#26536B' : '#0066CC'
     },
     {
       title: "Neon Nexus",
@@ -115,14 +139,14 @@ const Hero = () => {
                   theme === 'neon' ? '#9D00FF' :
                   theme === 'dark' ? '#7D00FF' : '#9933FF'
     },
-    {
-      title: "Quantum Echoes",
-      excerpt: "Time fractures when Symbiothec touches a mysterious artifact from a collapsed dimension...",
-      readTime: "8 min read",
-      accentColor: theme === 'synthwave' ? '#00F5FF' :
-                  theme === 'neon' ? '#FF2D75' :
-                  theme === 'dark' ? '#00DDFF' : '#00BFFF'
-    },
+   {
+  title: "Quantum Echoes",
+  excerpt: "Time fractures when Symbiothec touches a mysterious artifact from a collapsed dimension...",
+  readTime: "8 min read",
+  accentColor: theme === 'synthwave' ? '#FF00FF' :  // Changed to brighter magenta
+              theme === 'neon' ? '#FF2D75' :
+              theme === 'dark' ? '#26536B' : '#00BFFF'
+},
     {
       title: "Data Phantom",
       excerpt: "A digital ghost haunts the city's surveillance network, erasing memories of its victims...",
@@ -163,7 +187,8 @@ const Hero = () => {
     // Container principal pentru secțiunea hero
     <section
       id="home" // ID pentru navigarea cu anchor links
-      className={`relative py-20 md:py-32 flex items-center justify-center overflow-hidden ${currentTheme.bg}`}
+      className={`relative 
+ py-20 md:py-32 flex items-center justify-center overflow-hidden ${currentTheme.bg}`}
       // Clase CSS explicate:
       // - relative: poziționare relativă pentru copiii cu poziționare absolută
       // - py-20 md:py-32: padding vertical responsive (20 pe mobile, 32 pe desktop)
@@ -526,15 +551,15 @@ ${
       </p>
 
       {/* READ NOW BUTTON */}
-      <button
-        className="absolute bottom-6 right-6 font-bold py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105"
-        style={{
-          background: story.accentColor,
-          color: ['synthwave', 'neon'].includes(theme) ? 'black' : 'white',
-        }}
-      >
-        Read Now
-      </button>
+  <button
+  className="absolute bottom-6 right-6 font-bold py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105"
+  style={{
+    background: story.accentColor,
+    color: getButtonTextColor(story.accentColor, theme),
+  }}
+>
+  Read Now
+</button>
     </div>
   </div>
 ))}
@@ -696,3 +721,4 @@ export default Hero;
     - Custom Hooks pentru logică reutilizabilă
     - Context pentru state management global
 */
+

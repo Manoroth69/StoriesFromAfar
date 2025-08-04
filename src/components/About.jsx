@@ -25,7 +25,7 @@ const About = () => {
       featureBg: 'bg-white', // Fundal carduri
       featureBorder: 'border-gray-200 hover:border-blue-200', // Border carduri
       buttonPrimary: 'bg-blue-600 text-white hover:bg-blue-700', // Buton primar
-      buttonSecondary: 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white', // Buton secundar
+      buttonSecondary: 'border-blue-600 text-blue-100 hover:bg-blue-600 hover:text-white', // Buton secundar
       missionBg: 'from-blue-900 to-purple-900', // Gradient secțiune misiune
       missionText: 'text-white', // Text secțiune misiune
       missionSecondaryText: 'text-blue-100', // Text secundar misiune
@@ -41,7 +41,7 @@ const About = () => {
       featureBg: 'bg-gray-800 hover:bg-gray-750',
       featureBorder: 'border-gray-700 hover:border-blue-500/30',
       buttonPrimary: 'bg-blue-500 text-white hover:bg-blue-600',
-      buttonSecondary: 'border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white',
+      buttonSecondary: 'border-blue-400 text-blue-100 hover:bg-blue-400 hover:text-white',
       missionBg: 'from-gray-800 to-gray-700',
       missionText: 'text-white',
       missionSecondaryText: 'text-gray-300',

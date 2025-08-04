@@ -1,35 +1,31 @@
-// Importăm câteva iconițe din lucide-react pentru a reprezenta fiecare temă în UI
-import { Sun, Moon, Stars, Zap } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion"; // Adăugăm animații fluide
+import { Sun, Moon, Stars, Zap, Gamepad2 } from "lucide-react"; // Added Gamepad2 for cyberpunk
+import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 
-// Componenta principală care oferă un dropdown de selecție pentru temă
 const ThemeToggle = () => {
-  // Obținem tema curentă și funcția care o poate schimba din context
   const { theme, toggleTheme } = useTheme();
 
-  // Definim opțiunile disponibile pentru temă, fiecare cu nume, etichetă, icon și culoare
   const themeOptions = [
     {
       name: "light",
       label: "Light",
       icon: <Sun className="w-4 h-4" />,
       color: "text-amber-500",
-      animation: { rotate: 20, scale: 1.1 } // Animatie specială pentru soare
+      animation: { rotate: 20, scale: 1.1 }
     },
     {
       name: "dark",
       label: "Dark",
       icon: <Moon className="w-4 h-4" />,
       color: "text-indigo-400",
-      animation: { rotate: -15, scale: 1.1 } // Lună oscilantă
+      animation: { rotate: -15, scale: 1.1 }
     },
     {
       name: "synthwave",
       label: "Synthwave",
       icon: <Stars className="w-4 h-4" />,
       color: "text-purple-500",
-      animation: { rotate: 0, scale: [1, 1.2, 1] } // Pulsare stele
+      animation: { rotate: 0, scale: [1, 1.2, 1] }
     },
     {
       name: "neon",
@@ -37,16 +33,30 @@ const ThemeToggle = () => {
       icon: <Zap className="w-4 h-4" />,
       color: "text-cyan-400",
       animation: {
-        rotate: [0, 10, -10, 0], // Scânteiere electrică
+        rotate: [0, 10, -10, 0],
         scale: [1, 1.3, 1]
+      }
+    },
+    // New Cyberpunk theme option
+    {
+      name: "cyberpunk",
+      label: "Cyberpunk",
+      icon: <Gamepad2 className="w-4 h-4" />, // Using gamepad icon for cyberpunk feel
+      color: "text-pink-500",
+      animation: {
+        rotate: [0, 15, -15, 0], // Glitchy rotation
+        scale: [1, 1.1, 0.9, 1], // Pulsing effect
+        transition: {
+          duration: 0.8,
+          repeat: Infinity,
+          repeatType: "reverse"
+        }
       }
     }
   ];
 
   return (
-    // Wrapper-ul dropdown-ului, aliniat spre colțul din dreapta
     <div className="dropdown dropdown-end">
-      {/* Butonul principal care afișează iconița temei active */}
       <motion.div
         tabIndex={0}
         className="btn btn-ghost btn-circle"
@@ -84,7 +94,7 @@ const ThemeToggle = () => {
             >
               <Stars className="w-5 h-5 text-purple-500" />
             </motion.div>
-          ) : (
+          ) : theme === "neon" ? (
             <motion.div
               key="neon"
               initial={{ scale: 0.8, rotate: -10 }}
@@ -102,11 +112,33 @@ const ThemeToggle = () => {
             >
               <Zap className="w-5 h-5 text-cyan-400" />
             </motion.div>
+          ) : (
+            // Cyberpunk icon animation
+            <motion.div
+              key="cyberpunk"
+              initial={{ scale: 0.8, rotate: -10 }}
+              animate={{
+                scale: 1,
+                rotate: 0,
+                transition: {
+                  type: "spring",
+                  stiffness: 600,
+                  damping: 15
+                }
+              }}
+              exit={{ scale: 0.8, rotate: 10 }}
+              whileHover={{
+                scale: 1.2,
+                rotate: [0, 5, -5, 0], // Glitch effect on hover
+                transition: { duration: 0.5 }
+              }}
+            >
+              <Gamepad2 className="w-5 h-5 text-pink-500" />
+            </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
 
-      {/* Meniul dropdown care apare când utilizatorul dă click pe iconiță */}
       <motion.ul
         className="dropdown-content menu p-2 shadow-lg bg-base-200 rounded-box w-40 z-[1]"
         initial={{ opacity: 0, y: -10 }}
@@ -125,7 +157,6 @@ const ThemeToggle = () => {
               className={`flex items-center ${theme === option.name ? 'active' : ''}`}
               whileTap={{ scale: 0.95 }}
             >
-              {/* Iconița temei din listă cu animație specială */}
               <motion.span
                 className={`mr-2 ${option.color}`}
                 animate={theme === option.name ? option.animation : {}}
@@ -133,11 +164,7 @@ const ThemeToggle = () => {
               >
                 {option.icon}
               </motion.span>
-
-              {/* Eticheta cu numele temei */}
               <span>{option.label}</span>
-
-              {/* Indicator animat pentru tema activă */}
               <AnimatePresence>
                 {theme === option.name && (
                   <motion.span
@@ -145,7 +172,15 @@ const ThemeToggle = () => {
                     initial={{ scale: 0 }}
                     animate={{
                       scale: 1,
-                      transition: { repeat: Infinity, duration: 1.5 }
+                      transition: { 
+                        repeat: Infinity, 
+                        duration: 1.5,
+                        // Cyberpunk-specific pulse for active indicator
+                        ...(option.name === 'cyberpunk' && {
+                          scale: [1, 1.5, 1],
+                          opacity: [1, 0.7, 1]
+                        })
+                      }
                     }}
                     exit={{ scale: 0 }}
                   />
