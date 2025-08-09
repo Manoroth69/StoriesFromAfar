@@ -1,5 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from '../pages/Home.jsx';
+import PostPage from '../pages/PostPage.jsx';
+
 import App from './App'
 import ThemeProvider from './components/ThemeProvider.jsx';
 import './index.css';

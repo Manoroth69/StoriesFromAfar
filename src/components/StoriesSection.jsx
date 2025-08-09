@@ -61,6 +61,16 @@ const StoriesSection = () => {
       buttonSecondary: 'border-[#00F5FF] text-[#00F5FF] hover:bg-[#00F5FF] hover:text-black',
       loadButton: 'bg-gradient-to-r from-[#FF2D75] to-[#9D00FF] text-black'
     },
+     cyberpunk: {
+  bg: 'bg-[#FDF6E3]',
+  text: 'text-[#073642]',
+  accentText: 'from-[#B58900] to-[#CB4B16]',
+  cardBg: 'bg-[#EEE8D5]',
+  cardBorder: 'border-[#93A1A1]',
+  buttonPrimary: 'bg-gradient-to-r from-[#268BD2] to-[#2AA198] text-white',
+  buttonSecondary: 'border-[#268BD2] text-[#268BD2]',
+  buttonControls: 'border border-[#268BD2] text-[#268BD2]'
+}
   };
 
   // Selectarea temei curente cu fallback la tema light

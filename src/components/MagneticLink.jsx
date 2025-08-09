@@ -1,9 +1,79 @@
-// components/MagneticLink.jsx
 'use client';
-
-import { useRef, useEffect } from 'react';
+import {useState, useEffect} from 'react';
+import { useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { motion, useMotionTemplate, useMotionValue, animate } from 'framer-motion';
+
+// Define themeConfig outside the component to avoid recreation on each render
+const themeConfig = {
+  light: {
+    link: {
+      text: 'text-gray-800 hover:text-blue-600',
+      bg: 'hover:bg-blue-50/50',
+      underline: 'from-[#ff7edb] to-[#42d6ff]',
+      strength: 0.25
+    },
+    button: { 
+      text: '',
+      bg: '',
+      strength: 0.15 
+    }
+  },
+  dark: {
+    link: {
+      text: 'text-gray-200 hover:text-white',
+      bg: 'hover:bg-white/5',
+      underline: 'from-blue-400 to-indigo-500',
+      strength: 0.35
+    },
+    button: { 
+      text: '',
+      bg: '',
+      strength: 0.2 
+    }
+  },
+  synthwave: {
+    link: {
+      text: 'text-pink-300 hover:text-white',
+      bg: 'hover:bg-pink-900/20',
+      underline: 'from-[#ff7edb] to-[#42d6ff]',
+      strength: 0.5
+    },
+    button: { 
+      text: '',
+      bg: '',
+      strength: 0.3 
+    }
+  },
+  neon: {
+    link: {
+      text: 'text-cyan-300 hover:text-white',
+      bg: 'hover:bg-cyan-900/20',
+      underline: 'from-[#22d3ee] to-[#c026d3]',
+      strength: 0.3
+    },
+    button: { 
+      text: '',
+      bg: '',
+      strength: 0.2 
+    }
+  }
+};
+
+// Default configuration
+const defaultConfig = {
+  link: {
+    text: 'text-gray-800 hover:text-blue-600',
+    bg: 'hover:bg-blue-50/50',
+    underline: 'from-[#ff7edb] to-[#42d6ff]',
+    strength: 0.25
+  },
+  button: {
+    text: '',
+    bg: '',
+    strength: 0.15
+  }
+};
 
 export default function MagneticLink({
   children,
@@ -13,60 +83,20 @@ export default function MagneticLink({
 }) {
   const ref = useRef(null);
   const { theme } = useTheme();
+
+  // Get safe theme value
+  const activeTheme = theme && themeConfig[theme] ? theme : 'light';
+  const currentThemeConfig = themeConfig[activeTheme] || defaultConfig;
+
+  // Get the appropriate config based on isButton
+  const config = isButton 
+    ? currentThemeConfig.button || defaultConfig.button
+    : currentThemeConfig.link || defaultConfig.link;
+
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const scale = useMotionValue(1);
   const transform = useMotionTemplate`translate(${x}px, ${y}px) scale(${scale})`;
-
-  // Theme configuration for both buttons and links
-  const themeConfig = {
-    light: {
-      link: {
-        text: 'text-gray-800 hover:text-blue-600',
-        bg: 'hover:bg-blue-50/50',
-        underline: 'from-[#ff7edb] to-[#42d6ff]',
-        strength: 0.25
-      },
-      button: {
-        strength: 0.15
-      }
-    },
-    dark: {
-      link: {
-        text: 'text-gray-200 hover:text-white',
-        bg: 'hover:bg-white/5',
-        underline: 'from-blue-400 to-indigo-500',
-        strength: 0.35
-      },
-      button: {
-        strength: 0.2
-      }
-    },
-    synthwave: {
-      link: {
-        text: 'text-pink-300 hover:text-white',
-        bg: 'hover:bg-pink-900/20',
-        underline: 'from-[#ff7edb] to-[#42d6ff]',
-        strength: 0.5
-      },
-      button: {
-        strength: 0.3
-      }
-    },
-    neon: {
-      link: {
-        text: 'text-cyan-300 hover:text-white',
-        bg: 'hover:bg-cyan-900/20',
-        underline: 'from-[#22d3ee] to-[#c026d3]',
-        strength: 0.3
-      },
-      button: {
-        strength: 0.2
-      }
-    }
-  };
-
-  const config = isButton ? themeConfig[theme].button : themeConfig[theme].link;
 
   const handleMouseMove = (e) => {
     if (!ref.current) return;
@@ -77,11 +107,16 @@ export default function MagneticLink({
     const distanceX = e.clientX - centerX;
     const distanceY = e.clientY - centerY;
 
-    const moveX = distanceX * config.strength;
-    const moveY = distanceY * config.strength;
-
-    animate(x, moveX, { type: 'spring', damping: 15, stiffness: 150 });
-    animate(y, moveY, { type: 'spring', damping: 15, stiffness: 150 });
+    animate(x, distanceX * (config.strength || 0.2), { 
+      type: 'spring', 
+      damping: 15, 
+      stiffness: 150 
+    });
+    animate(y, distanceY * (config.strength || 0.2), { 
+      type: 'spring', 
+      damping: 15, 
+      stiffness: 150 
+    });
     animate(scale, 1.03, { duration: 0.2 });
   };
 
@@ -98,9 +133,9 @@ export default function MagneticLink({
       onMouseLeave={handleMouseLeave}
       style={{ transform }}
       className={`
-        inline-block no-underline
-        ${!isButton ? config.text : ''}
-        ${!isButton ? config.bg : ''}
+        inline-block no-underline relative group
+        ${!isButton ? (config.text || '') : ''}
+        ${!isButton ? (config.bg || '') : ''}
         ${className}
         will-change-transform
         cursor-pointer
@@ -109,15 +144,15 @@ export default function MagneticLink({
       {...props}
     >
       {!isButton && (
-        <>
-          <span className={`
+        <span
+          className={`
             absolute left-0 bottom-0 h-[2px] w-full
             transform origin-left scale-x-0
             transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]
-            bg-gradient-to-r ${config.underline}
+            bg-gradient-to-r ${config.underline || 'from-[#ff7edb] to-[#42d6ff]'}
             group-hover:scale-x-100
-          `}/>
-        </>
+          `}
+        />
       )}
 
       {props.href ? (

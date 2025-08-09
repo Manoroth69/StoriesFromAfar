@@ -82,6 +82,10 @@ export default function AnimatedCursor() {
         textColor: '#22d3ee',
         textBg: 'rgba(0, 0, 0, 0.9)'
       },
+      garden: {
+borderColor: '#000',
+bgColor:'#000'
+      },
       hover: { 
         borderColor: '#c026d3', 
         innerSize: 28,

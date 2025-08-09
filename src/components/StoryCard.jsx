@@ -59,6 +59,20 @@ const StoryCard = ({ story }) => {
       tagText: 'text-[#00F5FF]',
       button: 'bg-neon-gradient hover:bg-neon-gradient-hover',
       readTime: 'text-[#00F5FF]/80'
+    },
+    cyberpunk: {
+      cardBg: 'bg-[#EEE8D5]/90',          // Pale yellow background with transparency
+  cardBorder: 'border-[#93A1A1]/30',  // Grayish border
+  featuredBorder: 'ring-2 ring-[#CB4B16]',  // Orange ring for featured items
+  featuredBadge: 'bg-gradient-to-r from-[#B58900] to-[#CB4B16]', // Yellow to orange gradient
+  characterBg: 'bg-[#268BD2]/20',     // Blue character background
+  characterText: 'text-[#268BD2]',     // Blue character text
+  titleText: 'text-[#073642] hover:text-[#CB4B16]', // Dark blue to orange hover
+  excerptText: 'text-[#586E75]',       // Dark grayish blue
+  tagBg: 'bg-[#2AA198]/20 hover:bg-[#2AA198]/30', // Teal tag background
+  tagText: 'text-[#2AA198]',           // Teal tag text
+  button: 'bg-gradient-to-r from-[#268BD2] to-[#2AA198] hover:from-[#2AA198] hover:to-[#268BD2]', // Blue to teal gradient
+  readTime: 'text-[#B58900]/80' 
     }
   };
 

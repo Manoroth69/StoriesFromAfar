@@ -8,7 +8,7 @@ export const ThemeProvider = ({ children }) => {
   const themes = {
     light: {
       bg: 'bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_50%,#f1f5f9_100%)]',
-      text: 'text-gray-800',
+      text: 'text-gray-900',
       accentText: 'from-blue-600 to-purple-600',
       cardBg: 'bg-white',
       cardBorder: 'border-gray-200',
@@ -46,14 +46,16 @@ export const ThemeProvider = ({ children }) => {
       buttonControls: 'border border-[#00F5FF] text-[#00F5FF] hover:bg-[#00F5FF] hover:text-black transition duration-300 shadow-[0_0_10px_rgba(0,245,255,0.4)] hover:shadow-[0_0_20px_rgba(0,245,255,0.6)]'
     },
     cyberpunk: {
-      bg: 'bg-[#0f0f1a]',
-      text: 'text-[#e0e0e0]',
-      accentText: 'from-[#FF00FF] to-[#00FFFF]',
-      cardBg: 'bg-[#1a1a2e]',
-      cardBorder: 'border-[#FF00FF]/30',
-      buttonPrimary: 'bg-gradient-to-r from-[#FF00FF] to-[#00FFFF] text-black shadow-[0_0_10px_rgba(255,0,255,0.3)] hover:shadow-[0_0_20px_rgba(0,255,255,0.5)] hover:scale-105 transition-all duration-300 ease-out rounded-lg',
-      buttonControls: 'border border-[#FF00FF] text-[#FF00FF] hover:bg-[#FF00FF] hover:text-black transition duration-300'
-    }
+  bg: 'bg-[#FDF6E3]',
+  text: 'text-[#073642]',
+  accentText: 'from-[#B58900] to-[#CB4B16]',
+  cardBg: 'bg-[#EEE8D5]',
+  cardBorder: 'border-[#93A1A1]',
+  buttonPrimary: 'bg-gradient-to-r from-[#268BD2] to-[#2AA198] text-white',
+  buttonSecondary: 'border-[#268BD2] text-[#268BD2]',
+  buttonControls: 'border border-[#268BD2] text-[#268BD2]'
+}
+    
   };
 
   useEffect(() => {
@@ -80,7 +82,11 @@ export const ThemeProvider = ({ children }) => {
   if (!theme) return null;
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, themeConfig: themes[theme] }}>
+    <ThemeContext.Provider value={{
+      theme: theme || "light",
+      toggleTheme,
+      themeConfig: themes[theme] || themes.light
+    }}>
       {children}
     </ThemeContext.Provider>
   );

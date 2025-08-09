@@ -1,4 +1,4 @@
-import { Sun, Moon, Stars, Zap, Gamepad2 } from "lucide-react"; // Added Gamepad2 for cyberpunk
+import { Sun, Moon, Stars, Zap, Gamepad2, Sprout } from "lucide-react"; // Added Gamepad2 for cyberpunk
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 
@@ -38,21 +38,27 @@ const ThemeToggle = () => {
       }
     },
     // New Cyberpunk theme option
-    {
-      name: "cyberpunk",
-      label: "Cyberpunk",
-      icon: <Gamepad2 className="w-4 h-4" />, // Using gamepad icon for cyberpunk feel
-      color: "text-pink-500",
-      animation: {
-        rotate: [0, 15, -15, 0], // Glitchy rotation
-        scale: [1, 1.1, 0.9, 1], // Pulsing effect
-        transition: {
-          duration: 0.8,
-          repeat: Infinity,
-          repeatType: "reverse"
-        }
-      }
+   {
+  name: "garden",
+  label: "Garden",
+  icon: <Sprout className="w-4 h-4 text-emerald-600" />, // Using plant sprout icon
+  color: "text-emerald-600",
+  animation: {
+    y: [0, -3, 0], // Gentle up/down like swaying grass
+    scale: [1, 1.03, 1], // Subtle growth pulse
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      repeatType: "loop",
+      ease: "easeInOut"
     }
+  },
+  // Optional additional garden-themed props:
+  decorations: {
+    leafPattern: "bg-[url('/leaf-pattern.svg')]",
+    flowerAccent: "before:content-['🌸']"
+  }
+}
   ];
 
   return (
@@ -133,7 +139,7 @@ const ThemeToggle = () => {
                 transition: { duration: 0.5 }
               }}
             >
-              <Gamepad2 className="w-5 h-5 text-pink-500" />
+              <Sprout className="w-5 h-5 text-green-500" />
             </motion.div>
           )}
         </AnimatePresence>

@@ -82,6 +82,16 @@ const About = () => {
       missionSecondaryText: 'text-[#e2e8f0]/80',
       waveColor: 'text-[#0F0520]',
       cardHover: 'hover:shadow-[#00F5FF]/20'
+    },
+    cyberpunk: {
+     bg: 'bg-[#0F0520]',
+  text: 'text-[#e2e8f0]',
+  accentText: 'from-[#00F5FF] to-[#9D00FF]',
+  cardBg: 'bg-[#110033]/90',
+  cardBorder: 'border-[#9D00FF]/30',
+  buttonPrimary: 'bg-gradient-to-r from-[#00F5FF] to-[#9D00FF] text-white',
+  buttonSecondary: 'border-[#00F5FF] text-[#00F5FF]',
+  buttonControls: 'border border-[#00F5FF] text-[#00F5FF]',
     }
   };
 

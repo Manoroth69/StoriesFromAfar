@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import SymbiotechSlideImg from '../assets/SymbiotechSlideImg.jpg'; // adjust path if needed
+import Slider from '../components/Slider.jsx'
 
 // Iconițele pentru navigarea slider-ului din biblioteca lucide-react
 // ChevronLeft și ChevronRight sunt componente SVG pre-construite
@@ -103,13 +104,23 @@ function getButtonTextColor(accentColor, theme) {
        buttonControls: 'border border-[#00F5FF] text-[#00F5FF] hover:bg-[#00F5FF] hover:text-black transition duration-300 shadow-[0_0_10px_rgba(0,245,255,0.4)] hover:shadow-[0_0_20px_rgba(0,245,255,0.6)]' // Cyan cu hover
     },
      // New Cyberpunk theme
-    cyberpunk: {
-      primary: '#FF00FF',
-      secondary: '#00FFFF',
-      background: '#0f0f1a',
-      text: '#e0e0e0',
-      accent: '#FF00FF',
-      special: '#00FF41' // Matrix green for accents
+    garden: {
+     primary: '#4CAF50',          // Vibrant green (leaves)
+  secondary: '#A5D6A7',        // Soft mint (new growth)
+  background: '#E9F7EF',       // Pale spring green
+  text: '#1A3E2F',            // Dark spruce (text)
+  accent: '#FF9800',          // Warm orange (flowers)
+  special: '#8BC34A',          // Lime accent (buds)
+
+  // Usage examples:
+  bg: 'bg-[#E9F7EF]',
+  text: 'text-[#1A3E2F]',
+  accentText: 'from-[#4CAF50] to-[#8BC34A]',
+  cardBg: 'bg-[#F8FBF9]',
+  cardBorder: 'border-[#A5D6A7]',
+  buttonPrimary: 'bg-[#4CAF50] hover:bg-[#388E3C] text-white',
+  buttonSecondary: 'border-[#8BC34A] text-[#4CAF50] hover:bg-[#F1F8E9]',
+  buttonControls: 'border border-[#A5D6A7] text-[#689F38]'
     }
   };
 
@@ -188,108 +199,59 @@ function getButtonTextColor(accentColor, theme) {
     <section
       id="home" // ID pentru navigarea cu anchor links
       className={`relative 
- py-20 md:py-32 flex items-center justify-center overflow-hidden ${currentTheme.bg}`}
-      // Clase CSS explicate:
-      // - relative: poziționare relativă pentru copiii cu poziționare absolută
-      // - py-20 md:py-32: padding vertical responsive (20 pe mobile, 32 pe desktop)
-      // - flex items-center justify-center: centrarea conținutului
-      // - overflow-hidden: ascunde elementele care ies din container
+ py-20 md:py-32 flex items-center justify-center overflow-hidden  ${currentTheme.bg}`}
+     
     >
 
       {/* SFERE ANIMATE DE FUNDAL */}
       {/* Div container pentru efectele vizuale de fundal */}
       <div className="absolute inset-0 opacity-20">
-        {/*
-          absolute inset-0 = poziționare absolută care ocupă tot container-ul
-          opacity-20 = 20% transparență pentru efect subtil
-        */}
-
+        
         {/* SFERA 1 - Poziționată în partea stângă-sus */}
         <div className={`absolute top-1/4 left-1/4 w-72 h-72 rounded-full filter blur-3xl animate-pulse mix-blend-screen
           ${theme === 'synthwave' ? 'bg-[#FF00FF]' :
             theme === 'dark' ? 'bg-[#FF2D75]' : 'bg-[#FF99CC]'}`}>
         </div>
-        {/*
-          Clase CSS explicate:
-          - top-1/4 left-1/4: poziționează la 25% din înălțime și lățime
-          - w-72 h-72: dimensiune 18rem × 18rem (288px × 288px)
-          - rounded-full: face elementul perfect circular
-          - filter blur-3xl: aplicarea unui blur foarte puternic (64px)
-          - animate-pulse: animație predefinită Tailwind (fade in/out)
-          - mix-blend-screen: mod de amestec CSS pentru efecte de lumină
-          - Culorile se aleg conditional în funcție de temă
-        */}
+     
 
         {/* SFERA 2 - Poziționată în partea dreaptă-jos */}
         <div className={`absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full filter blur-3xl animate-pulse delay-1000 mix-blend-screen
           ${theme === 'synthwave' ? 'bg-[#00F5FF]' :
             theme === 'dark' ? 'bg-[#00A5FF]' : 'bg-[#00DDFF]'}`}>
         </div>
-        {/*
-          delay-1000: întârziere de 1000ms pentru animația pulse
-          w-96 h-96: dimensiune mai mare (24rem × 24rem = 384px × 384px)
-        */}
+      
 
         {/* SFERA 3 - Poziționată în centru */}
         <div className={`absolute top-1/2 left-1/2 w-64 h-64 rounded-full filter blur-2xl animate-pulse delay-500 mix-blend-screen
           ${theme === 'synthwave' ? 'bg-[#9D00FF]' :
             theme === 'dark' ? 'bg-[#7D00FF]' : 'bg-[#CC00FF]'}`}>
         </div>
-        {/*
-          top-1/2 left-1/2: centrare la 50% din înălțime și lățime
-          blur-2xl: blur mai mic decât celelalte (40px)
-          delay-500: întârziere de 500ms
-        */}
+     
       </div>
 
       {/* CONȚINUTUL PRINCIPAL */}
       {/* Container pentru textul și slider-ul hero */}
       <div className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        {/*
-          z-10: z-index pentru a fi deasupra sferelor de fundal
-          max-w-7xl: lățime maximă de 80rem (1280px)
-          mx-auto: centrare orizontală cu margin auto
-          px-4 sm:px-6 lg:px-8: padding orizontal responsive
-        */}
-
+     
         {/* GRID LAYOUT pentru organizarea în coloane */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/*
-            grid: activează CSS Grid
-            lg:grid-cols-2: 2 coloane pe ecrane large (≥1024px)
-            gap-12: spațiu de 3rem (48px) între coloane
-            items-center: alinierea verticală la centru
-          */}
+         
 
           {/* COLOANA STÂNGĂ - Text și butoane CTA */}
           <div className="text-center lg:text-left animate-fade-in flex flex-col items-center lg:items-start gap">
-            {/*
-              text-center lg:text-left: text centrat pe mobile, aliniat stânga pe desktop
-              animate-fade-in: animație CSS custom pentru apariția elementului
-            */}
+           
 
             {/* Container pentru titlu și descriere */}
             <div className="mb-8">
               {/* TITLUL PRINCIPAL */}
               <h1 className={`text-5xl lg:text-6xl font-bold ${currentTheme.text} mb-6 leading-tight animate-scale-in`}>
-                {/*
-                  text-5xl lg:text-7xl: dimensiune text responsivă (3rem pe mobile, 4.5rem pe desktop)
-                  font-bold: greutatea fontului 700
-                  leading-tight: line-height redus pentru compactare
-                  animate-scale-in: animație custom de scalare
-                */}
-                Discover Original
+                
+                Breaking Boredom, 
 
                 {/* Span pentru textul cu gradient */}
-                <span className={`block bg-gradient-to-r ${currentTheme.accentText} bg-clip-text text-transparent animate-pulse`}>
-                  {/*
-                    block: face span-ul să se comporte ca un element block (pe linie nouă)
-                    bg-gradient-to-r: gradient de la stânga la dreapta
-                    bg-clip-text: clipează gradient-ul la formele literelor
-                    text-transparent: face textul transparent pentru a vedea gradient-ul
-                    animate-pulse: animație de pulsare
-                  */}
-                 AI-Generated Stories
+                <span className={`block  `}>
+                
+                 One Truth at a Time
                 </span>
               </h1>
 
@@ -303,20 +265,23 @@ function getButtonTextColor(accentColor, theme) {
     leading-relaxed
     animate-fade-in
     delay-300
+   
   `}
 >
-  Dive into
-<span className={`ml-1 font-semibold bg-clip-text text-transparent bg-gradient-to-r ${currentTheme.accentText} inline-block`}>
-  thrilling characters ,
+  Unlock the truth behind the headlines —  
+<span className={`ml-1 font-semibold  inline-block`}>
+  no hype,
 </span>
 
- <span className={`ml-1 font-semibold bg-clip-text text-transparent bg-gradient-to-r ${currentTheme.accentText} inline-block`}>
-  strange futures ,
-</span> and stories crafted by code —&nbsp;
+ <span className={`ml-1 font-semibold    inline-block`}>
+just honest, deep-dive insights. 
+</span> 
 
-  <span className="font-semibold bg-clip-text text-transparent bg-gradient-to-r ${currentTheme.accentText}">
-    infused with human ingenuity and creativity.
-  </span>
+<span className={`ml-1  inline-block`}>
+   Stay here if clear, unfiltered news matter to you.
+</span>
+
+ 
 </p>
             </div>
 
@@ -406,7 +371,7 @@ function getButtonTextColor(accentColor, theme) {
               {/* BUTONUL SECUNDAR */}
 
        {/* UNIVERSAL SECONDARY BUTTON */}
-<MagneticLink isButton>
+<MagneticLink isButton href="/freshnews">
   <button className={`
     flex items-center justify-center
     font-bold py-3 px-8 rounded-lg
@@ -418,15 +383,7 @@ function getButtonTextColor(accentColor, theme) {
     z-0
     cursor-pointer
     /* Theme-adaptive colors */
-    ${
-      theme === 'synthwave'
-        ? 'border-[#ea00ff] text-[#fdfdfd] hover:bg-[#b780db] hover:text-black'
-        : theme === 'neon'
-        ? 'border-[#00ffdd] text-[#ffffff] hover:bg-[#00F5FF] hover:text-black'
-        : theme === 'dark'
-        ? 'border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black'
-        : 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
-    }
+    ${themes[theme]?.buttonSecondary}
     /* Shadow effects */
     /* Shadow effects */
 ${
@@ -453,7 +410,7 @@ ${
 
     {/* Button content */}
     <span className="relative flex items-center gap-2">
-      <span>View Gallery</span>
+      <span>Highlights</span>
       <svg
         className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
         fill="none"
@@ -489,129 +446,14 @@ ${
           </div>
 
           {/* COLOANA DREAPTĂ - Slider cu povești */}
-          <div className="relative w-full animate-fade-in delay-700">
-            {/* Container principal pentru slider */}
-            <div className="relative h-[400px] w-full overflow-hidden rounded-2xl">
-              {/*
-                h-[400px]: înălțime fixă de 400px
-                overflow-hidden: ascunde conținutul care iese din container
-                rounded-2xl: borduri rotunjite mari (16px)
-              */}
 
-              {/* MAPAREA SLIDE-URILOR */}
-              {/* Creăm un element pentru fiecare story din array */}
-             {stories.map((story, index) => (
-  <div
-    key={index}
-    className={`absolute inset-0 overflow-hidden rounded-2xl transition-all duration-500 ease-in-out transform`}
-    style={{
-      transform: `translateX(${(index - currentSlide) * 100}%)`,
-      opacity: index === currentSlide ? 1 : 0,
-      zIndex: index === currentSlide ? 10 : 1,
-    }}
-  >
-    {/* 🎨 Background image for the first slide */}
-   {index === 0 && (
-  <>
-    <div
-      className="absolute inset-0 -z-20 bg-cover bg-center"
-      style={{ backgroundImage: `url(${SymbiotechSlideImg})` }}
-    />
-
-    {/* 🕶️ Dark overlay for better contrast */}
-    <div className="absolute inset-0 -z-10 bg-black/50 backdrop-blur-sm rounded-2xl"></div>
-  </>
-)}
-
-    {/* 🌟 Content layer */}
-    <div
-      className={`${currentTheme.cardBg} ${currentTheme.cardBorder} p-8 border rounded-2xl h-full w-full `}
-    >
-      {/* HEADER-UL SLIDE-ULUI */}
-      <div className="flex items-center mb-4">
-        <div
-          className="w-12 h-12 rounded-full flex items-center justify-center animate-pulse"
-          style={{ background: story.accentColor }}
-        >
-          <span className="text-white font-bold text-lg">{index + 1}</span>
-        </div>
-        <div className="ml-3">
-          <h3 className={`text-xl font-semibold ${currentTheme.text}`}>
-            {story.title}
-          </h3>
-          <p className="text-sm" style={{ color: story.accentColor }}>
-            {story.readTime}
-          </p>
-        </div>
+<div className="relative w-full animate-fade-in delay-700">
+        <Slider 
+          slides={stories} 
+          themeConfig={currentTheme} 
+        />
       </div>
-
-      {/* EXCERPT */}
-      <p className={`${currentTheme.text} text-lg leading-relaxed mb-6`}>
-        {story.excerpt}
-      </p>
-
-      {/* READ NOW BUTTON */}
-  <button
-  className="absolute bottom-6 right-6 font-bold py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105"
-  style={{
-    background: story.accentColor,
-    color: getButtonTextColor(story.accentColor, theme),
-  }}
->
-  Read Now
-</button>
-    </div>
-  </div>
-))}
-
-            </div>
-
-            {/* BUTOANELE DE NAVIGARE */}
-            {/* Butonul pentru slide-ul anterior */}
-            <button
-              onClick={prevSlide} // Event handler pentru click
-              className={`absolute left-8 top-1/2 -translate-y-1/2 z-20 p-1 rounded-lg ${currentTheme.buttonControls} backdrop-blur-sm cursor-pointer`}
-              // left-2: poziționar la 8px de la stânga
-              // top-1/2 -translate-y-1/2: centrare verticală perfectă
-              // z-20: z-index mare pentru a fi deasupra slide-urilor
-              // backdrop-blur-sm: efect de blur pentru fundul butonului
-            >
-              <ChevronLeft className="w-6 h-6" /> {/* Iconica din lucide-react */}
-            </button>
-
-            {/* Butonul pentru slide-ul următor */}
-            <button
-              onClick={nextSlide}
-              className={`absolute right-8 top-1/2 -translate-y-1/2 z-20 p-1 rounded-lg ${currentTheme.buttonControls} backdrop-blur-sm cursor-pointer`}
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-
-            {/* INDICATORII PUNCTE (dots) */}
-            {/* Container pentru punctele de navigare */}
-            <div className="flex justify-center mt-4 space-x-2">
-              {/* space-x-2: spațiu orizontal de 8px între copii */}
-
-              {/* Mapăm stories pentru a crea un punct pentru fiecare */}
-              {stories.map((_, index) => (
-                // _ înseamnă că nu folosim primul parametru (story object)
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)} // Navigare directă la slide-ul selectat
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentSlide ? 'bg-current scale-125' : 'bg-gray-400/50'
-                  }`}
-                  // Conditional className:
-                  // - dacă este slide-ul activ: bg-current (folosește culoarea curentă) și scale-125 (25% mai mare)
-                  // - altfel: bg-gray-400/50 (gri cu 50% transparență)
-                  style={{
-                    // Culoarea se setează dinamic pentru punctul activ
-                    color: stories[currentSlide].accentColor
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+          
         </div>
       </div>
 
