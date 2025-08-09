@@ -44,17 +44,8 @@ export const ThemeProvider = ({ children }) => {
       cardBorder: 'border-[#9D00FF]/30',
       buttonPrimary: 'bg-gradient-to-r from-[#00F5FF] to-[#00C2C2] text-black shadow-[0_0_10px_rgba(0,245,255,0.3)] hover:shadow-[0_0_20px_rgba(0,245,255,0.6)] hover:scale-105 transition-all duration-300 ease-out rounded-lg',
       buttonControls: 'border border-[#00F5FF] text-[#00F5FF] hover:bg-[#00F5FF] hover:text-black transition duration-300 shadow-[0_0_10px_rgba(0,245,255,0.4)] hover:shadow-[0_0_20px_rgba(0,245,255,0.6)]'
-    },
-    cyberpunk: {
-  bg: 'bg-[#FDF6E3]',
-  text: 'text-[#073642]',
-  accentText: 'from-[#B58900] to-[#CB4B16]',
-  cardBg: 'bg-[#EEE8D5]',
-  cardBorder: 'border-[#93A1A1]',
-  buttonPrimary: 'bg-gradient-to-r from-[#268BD2] to-[#2AA198] text-white',
-  buttonSecondary: 'border-[#268BD2] text-[#268BD2]',
-  buttonControls: 'border border-[#268BD2] text-[#268BD2]'
-}
+    }
+   
     
   };
 

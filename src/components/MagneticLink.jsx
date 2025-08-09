@@ -1,5 +1,5 @@
 'use client';
-import {useState, useEffect} from 'react';
+
 import { useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { motion, useMotionTemplate, useMotionValue, animate } from 'framer-motion';
